@@ -1,0 +1,349 @@
+/* Import Pixel Font */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    background-color: #74C3FF; /* Minecraft Sky Blue */
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* The Main Window Frame (Stone UI Style) */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    min-height: 80vh;
+    background-color: #C6C6C6; /* Light Gray Stone */
+    border: 4px solid #373737; /* Dark Stone Border */
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP: The Code Editor (Book & Quill Style) */
+.editor-pane {
+    flex: 1;
+    padding: 20px;
+    background-color: #F4E4BC; /* Parchment Paper Color */
+    border-bottom: 4px solid #57381C; /* Wood Divider */
+    color: #3e2723; /* Ink Color */
+}
+
+h2 {
+    margin-top: 0;
+    color: #373737;
+    text-transform: uppercase;
+    font-size: 32px;
+}
+
+h3 {
+    margin-top: 0;
+    color: #373737;
+    text-transform: uppercase;
+    font-size: 24px;
+}
+
+/* The Input Box */
+textarea {
+    width: 100%;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid #57381C;
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    color: #000;
+    padding: 10px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    padding: 8px;
+    border: 2px solid #57381C;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Button (Minecraft Button Style) */
+button {
+    background-color: #787878; /* Stone Button */
+    color: #FFF;
+    border: 2px solid #000;
+    padding: 10px 20px;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: inset 2px 2px #AAA, inset -2px -2px #444; /* 3D Effect */
+    transition: all 0.1s;
+}
+
+button:hover {
+    background-color: #888888;
+}
+
+button:active {
+    background-color: #555;
+    box-shadow: inset 2px 2px #222;
+}
+
+a {
+    color: #57381C;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* BOTTOM: The Game Grid (Grass World) */
+.game-pane {
+    flex: 1.5;
+    background-color: #74C3FF; /* Sky continuation */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    padding: 20px;
+}
+
+table.grid {
+    border-collapse: collapse;
+    background-color: #7CFC00; /* Grass Green */
+    border: 4px solid #482708; /* Dirt Brown Border */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+}
+
+td.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(0,0,0,0.1); /* Subtle grid lines */
+    text-align: center;
+    image-rendering: pixelated; /* Keeps images sharp */
+    position: relative;
+    transition: all 0.2s;
+}
+
+/* Grid Elements */
+.wall {
+    background-color: #616161; /* Cobblestone Gray */
+    background-image: repeating-linear-gradient(45deg, #555 25%, transparent 25%, transparent 75%, #555 75%, #555), 
+                      repeating-linear-gradient(45deg, #555 25%, #616161 25%, #616161 75%, #555 75%, #555);
+    background-size: 10px 10px;
+    border: 2px solid #444;
+}
+
+.player {
+    background-color: #00AAAA; /* Steve Shirt Teal */
+    border: 2px solid #000;
+    position: relative;
+}
+
+.player::after {
+    content: '🤖';
+    font-size: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.goal {
+    background-color: #52D017; /* Emerald Block Green */
+    border: 2px solid #FFF;
+    animation: glow 1s infinite alternate;
+    position: relative;
+}
+
+.goal::after {
+    content: '⭐';
+    font-size: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes glow {
+    from { 
+        box-shadow: 0 0 2px #fff, 0 0 5px #52D017;
+    }
+    to { 
+        box-shadow: 0 0 10px #fff, 0 0 20px #52D017;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        width: 100%;
+    }
+    
+    td.cell {
+        width: 40px;
+        height: 40px;
+    }
+    
+    h2 {
+        font-size: 24px;
+    }
+}
+
+/* --- NEW THEMES --- */
+
+/* Theme: Lava (Levels 6-10) */
+body.theme-lava {
+    background-color: #2b0000; /* Dark Red */
+}
+body.theme-lava .container {
+    background-color: #4a0000; /* Darker Red Stone */
+    border-color: #1a0000;
+}
+body.theme-lava .editor-pane {
+    background-color: #2d2d2d; /* Dark Grey */
+    color: #ffcccc;
+    border-bottom-color: #800000;
+}
+body.theme-lava .game-pane {
+    background-color: #2b0000;
+}
+body.theme-lava table.grid {
+    background-color: #3d0000; /* Dark Ground */
+    border-color: #000;
+}
+body.theme-lava h2, body.theme-lava h3 {
+    color: #ff4444;
+}
+
+/* Theme: Space (Levels 16-20) */
+body.theme-space {
+    background-color: #000022; /* Deep Space Blue */
+    background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                      radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                      radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+}
+body.theme-space .container {
+    background-color: #111; /* Black Metal */
+    border-color: #00ffff; /* Neon Cyan Border */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+body.theme-space .editor-pane {
+    background-color: #050510;
+    color: #00ffff;
+    border-bottom-color: #008888;
+}
+body.theme-space textarea {
+    background: rgba(0, 20, 40, 0.8);
+    color: #00ffff;
+    border-color: #008888;
+}
+body.theme-space .game-pane {
+    background-color: transparent;
+}
+body.theme-space table.grid {
+    background-color: #000;
+    border-color: #00ffff;
+}
+body.theme-space h2, body.theme-space h3 {
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+/* --- NEW ASSETS --- */
+
+/* Lava Tile */
+.lava {
+    background-color: #cf1020;
+    background-image: linear-gradient(45deg, #ff4500 25%, transparent 25%, transparent 75%, #ff4500 75%, #ff4500),
+                      linear-gradient(45deg, #ff4500 25%, transparent 25%, transparent 75%, #ff4500 75%, #ff4500);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    animation: lavaFlow 2s linear infinite;
+}
+@keyframes lavaFlow {
+    0% { background-position: 0 0, 10px 10px; }
+    100% { background-position: 20px 20px, 30px 30px; }
+}
+
+/* Mine Tile */
+.mine {
+    background-color: #555;
+    position: relative;
+}
+.mine::after {
+    content: '💣';
+    font-size: 24px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Flag (Goal for Lava levels) */
+.flag {
+    background-color: #444;
+    position: relative;
+}
+.flag::after {
+    content: '🚩';
+    font-size: 24px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Bush (Jumpable Obstacle) */
+.bush {
+    background-color: #228B22; /* Forest Green */
+    position: relative;
+    border-radius: 50%;
+}
+.bush::after {
+    content: '🌳';
+    font-size: 24px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Spike (Hazard) */
+.spike {
+    background-color: #ddd;
+    position: relative;
+}
+.spike::after {
+    content: '⚠️'; /* Or a spike emoji if available, or just CSS triangles */
+    font-size: 24px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Enemy Robot */
+.enemy {
+    background-color: #330000;
+    border: 2px solid #ff0000;
+    position: relative;
+    z-index: 10; /* Above floor */
+}
+.enemy::after {
+    content: '👾';
+    font-size: 28px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
