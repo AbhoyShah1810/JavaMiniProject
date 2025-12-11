@@ -21,8 +21,101 @@
     Connection con = null;
     PreparedStatement psList = null;
     ResultSet rsList = null;
+    
+    // User Management Resources
+    PreparedStatement psUserList = null;
+    ResultSet rsUserList = null;
+    
     try {
         con = DBConnection.getConnection();
+        
+        // --- USER MANAGEMENT LOGIC ---
+        
+        // Handle USER UPDATE
+        if (request.getParameter("update_user") != null) {
+            String uId = request.getParameter("user_id");
+            String pass = request.getParameter("password");
+            String uRole = request.getParameter("role");
+            String uLevel = request.getParameter("current_level_id");
+            
+            if (uId != null) {
+                try {
+                    PreparedStatement ps = con.prepareStatement("UPDATE users SET password=?, role=?, current_level_id=? WHERE user_id=?");
+                    ps.setString(1, pass);
+                    ps.setString(2, uRole);
+                    ps.setInt(3, Integer.parseInt(uLevel));
+                    ps.setInt(4, Integer.parseInt(uId));
+                    int rows = ps.executeUpdate();
+                    ps.close();
+                    if (rows > 0) {
+                        message = "User updated successfully!";
+                        messageType = "success";
+                    } else {
+                        message = "Error: User not found!";
+                        messageType = "error";
+                    }
+                } catch (Exception e) {
+                    message = "Error updating user: " + e.getMessage();
+                    messageType = "error";
+                }
+            }
+        }
+        
+        // Handle USER DELETE
+        if (request.getParameter("delete_user") != null) {
+            String uId = request.getParameter("user_id");
+             if (uId != null) {
+                try {
+                    PreparedStatement ps = con.prepareStatement("DELETE FROM users WHERE user_id=?");
+                    ps.setInt(1, Integer.parseInt(uId));
+                    int rows = ps.executeUpdate();
+                    ps.close();
+                    if (rows > 0) {
+                        message = "User deleted successfully!";
+                        messageType = "success";
+                    } else {
+                        message = "Error: User not found!";
+                        messageType = "error";
+                    }
+                } catch (Exception e) {
+                    message = "Error deleting user: " + e.getMessage();
+                    messageType = "error";
+                }
+            }
+        }
+        
+        // Fetch User for Editing
+        String editUserId = request.getParameter("edit_user_id");
+        if (request.getParameter("user_id") != null && request.getParameter("edit_user") != null) {
+            editUserId = request.getParameter("user_id");
+        }
+        
+        String editUsername = "";
+        String editPassword = "";
+        String editRole = "STUDENT";
+        int editCurrentLevel = 1;
+        boolean isUserEditMode = false;
+        
+        if (editUserId != null && !editUserId.isEmpty()) {
+            try {
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE user_id=?");
+                ps.setInt(1, Integer.parseInt(editUserId));
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    isUserEditMode = true;
+                    editUsername = rs.getString("username");
+                    editPassword = rs.getString("password");
+                    editRole = rs.getString("role");
+                    editCurrentLevel = rs.getInt("current_level_id");
+                }
+                rs.close();
+                ps.close();
+            } catch (Exception e) {
+                // Ignore
+            }
+        }
+        
+        // --- LEVEL MANAGEMENT LOGIC (Existing) ---
         
         // Handle CREATE operation
         if (request.getParameter("create") != null) {
@@ -368,6 +461,102 @@
                 </tbody>
             </table>
         </div>
+        <!-- USER MANAGER SECTION -->
+        <hr style="border: 4px solid #373737; margin: 40px 0;">
+        
+        <!-- User Editor Form -->
+        <div class="form-section" style="background-color: #E6E6FA;">
+            <h3><%= isUserEditMode ? "Edit User: " + editUsername : "Manage Users" %></h3>
+            <% if (isUserEditMode) { %>
+            <form method="POST">
+                <input type="hidden" name="user_id" value="<%= editUserId %>">
+                
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" value="<%= editUsername %>" disabled style="background-color: #ddd;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="text" id="password" name="password" value="<%= editPassword %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select id="role" name="role" style="width: 100%; padding: 8px; font-family: 'VT323'; font-size: 18px; border: 2px solid #57381C;">
+                        <option value="STUDENT" <%= "STUDENT".equals(editRole) ? "selected" : "" %>>STUDENT</option>
+                        <option value="ADMIN" <%= "ADMIN".equals(editRole) ? "selected" : "" %>>ADMIN</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="current_level_id">Current Level:</label>
+                    <input type="number" id="current_level_id" name="current_level_id" value="<%= editCurrentLevel %>" required>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" name="update_user">Update User</button>
+                    <a href="admin.jsp" style="flex: 1; text-align: center; padding: 10px; background-color: #787878; color: #FFF; border: 2px solid #000; text-decoration: none; display: inline-block;">Cancel</a>
+                </div>
+            </form>
+            <% } else { %>
+                <p>Select a user from the list below to edit.</p>
+            <% } %>
+        </div>
+        
+        <!-- User List -->
+        <div class="list-section">
+            <h3>All Users</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Level</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 
+                        psUserList = con.prepareStatement("SELECT * FROM users ORDER BY user_id");
+                        rsUserList = psUserList.executeQuery();
+                        boolean hasUsers = false;
+                        while (rsUserList.next()) {
+                            hasUsers = true;
+                            int uId = rsUserList.getInt("user_id");
+                            String uName = rsUserList.getString("username");
+                            String uRole = rsUserList.getString("role");
+                            int uLvl = rsUserList.getInt("current_level_id");
+                    %>
+                    <tr>
+                        <td><%= uId %></td>
+                        <td><%= uName %></td>
+                        <td><%= uRole %></td>
+                        <td><%= uLvl %></td>
+                        <td>
+                            <div class="action-buttons">
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="user_id" value="<%= uId %>">
+                                    <button type="submit" name="edit_user" class="btn-small">Edit</button>
+                                </form>
+                                <% if (!"admin".equals(uName)) { // Prevent deleting main admin %>
+                                <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete user <%= uName %>?');">
+                                    <input type="hidden" name="user_id" value="<%= uId %>">
+                                    <button type="submit" name="delete_user" class="btn-small" style="background-color: #AA0000;">Delete</button>
+                                </form>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% 
+                        }
+                        rsUserList.close();
+                        psUserList.close();
+                    %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
@@ -379,6 +568,8 @@
         try {
             if (rsList != null) rsList.close();
             if (psList != null) psList.close();
+            if (rsUserList != null) rsUserList.close();
+            if (psUserList != null) psUserList.close();
             if (con != null) con.close();
         } catch (SQLException e) {
             // Ignore
