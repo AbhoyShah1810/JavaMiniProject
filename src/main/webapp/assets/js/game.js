@@ -266,10 +266,7 @@ function jumpPlayer(dr, dc, steps) {
             if (cell.classList.contains('lava')) { reject(new Error("Melted! You jumped into lava.")); return; }
             if (cell.classList.contains('mine')) { reject(new Error("Boom! You jumped on a mine.")); return; }
             if (cell.classList.contains('spike')) { reject(new Error("Ouch! You jumped on spikes.")); return; }
-            // Note: Landing on a bush is okay? User said "jump over bush". 
-            // Usually landing ON a bush is weird, but let's assume it's safe or maybe you can't land on it?
-            // "user can jump over bush and spikes".
-            // I'll assume landing on bush is safe for now, or maybe it's an obstacle you can't stand on?
+
             // For now, I'll treat bush as safe to land on, but primarily an obstacle for walking.
         }
 

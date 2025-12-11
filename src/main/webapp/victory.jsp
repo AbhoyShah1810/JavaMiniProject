@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         body {
-            /* Ensure we use the game's sky blue background */
             background-color: #74C3FF;
             overflow: hidden;
         }
@@ -49,8 +48,8 @@
         }
 
         .leaderboard-panel {
-            background-color: #F4E4BC; /* Parchment */
-            border: 4px solid #57381C; /* Wood */
+            background-color: #F4E4BC; 
+            border: 4px solid #57381C; 
             padding: 20px;
             max-height: 300px;
             overflow-y: auto;
@@ -64,7 +63,7 @@
             padding-bottom: 10px;
             margin-top: 0;
             margin-bottom: 0;
-            background-color: #EACD96; /* Slightly darker parchment header */
+            background-color: #EACD96;  
         }
 
         .leaderboard-table {

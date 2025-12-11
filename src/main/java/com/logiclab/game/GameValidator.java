@@ -15,8 +15,8 @@ public class GameValidator {
 
         if (gridLayout == null || gridLayout.isEmpty())
             return false;
-
-        String[] items = gridLayout.split(";");
+        
+        String[] items = gridLayout.split(";"); // Split by semicolon ";" in the console by the player if trying to enter multiple commands
         for (String item : items) {
             String trimmed = item.trim();
             if (trimmed.isEmpty())
