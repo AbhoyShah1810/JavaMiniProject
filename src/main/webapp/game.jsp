@@ -47,6 +47,11 @@
             levelDescription = rsLevel.getString("description") != null ? rsLevel.getString("description") : "";
             gridSize = rsLevel.getInt("grid_size");
         } else {
+            // Level not found, likely completed all levels
+            if (currentLevel > 20) {
+                response.sendRedirect("victory.jsp");
+                return;
+            }
             feedback = "Game Over! You beat all levels.";
             statusClass = "color: #00AA00;";
         }
@@ -76,7 +81,12 @@
                     psUp.close();
                     con.close();
                     
-                    // Redirect immediately to show next level - MUST be before any HTML output
+                    // Redirect immediately
+                    if (nextLevelId > 20) {
+                        response.sendRedirect("victory.jsp");
+                        return;
+                    }
+                    
                     response.sendRedirect("game.jsp?levelComplete=true");
                     return;
                 } else {
