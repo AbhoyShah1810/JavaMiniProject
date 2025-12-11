@@ -15,8 +15,8 @@ public class DBConnection {
     // RECOMMENDED: Use a dedicated MySQL user (not root) for better security
     // Run: ./database/create_user_and_setup.sh to create the 'logiclab' user
     private static final String DB_URL = "jdbc:mysql://localhost:3306/logiclab";
-    private static final String DB_USERNAME = "logiclab";  // Recommended: dedicated user
-    private static final String DB_PASSWORD = "logiclab123";  // Update after running setup script
+    private static final String DB_USERNAME = "root";  // Recommended: dedicated user
+    private static final String DB_PASSWORD = "Ad@rsh1811";  // Update after running setup script
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     
     /**

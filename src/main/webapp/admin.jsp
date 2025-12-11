@@ -121,6 +121,10 @@
         
         // Handle READ operation - Fetch level for editing
         String editLevelId = request.getParameter("edit");
+        // FIX: If edit triggered by button (POST), the value is in 'level_id'
+        if (request.getParameter("level_id") != null && editLevelId != null) {
+            editLevelId = request.getParameter("level_id");
+        }
         String editDescription = "";
         String editGridLayout = "";
         String editSolutionKey = "";
