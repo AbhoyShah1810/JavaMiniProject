@@ -16,6 +16,15 @@ Ensure you have the following installed:
 ### 2.1 Automated Setup (Recommended)
 We provide a script to automatically create the `logiclab` user and initialize the database.
 
+**Windows (PowerShell):**
+1.  Open PowerShell in the project root.
+2.  Run the setup script:
+    ```powershell
+    ./database/setup_windows.ps1
+    ```
+    *Note: The script uses the root password "NOITIK_@_9304" by default.*
+
+**macOS / Linux:**
 1.  Open a terminal in the project root.
 2.  Run the setup script:
     ```bash
@@ -42,7 +51,12 @@ private static final String DB_PASSWORD = "logiclab123";
 ```
 
 ### 3.2 Tomcat Configuration
-Ensure your Tomcat is running on Port **8080** (default). If it is on a different port (e.g., 8082), adjust the URLs below accordingly.
+Ensure your Tomcat is running on Port **8082** (as requested).
+To change the port:
+1.  Go to your Tomcat installation directory.
+2.  Open `conf/server.xml`.
+3.  Find `<Connector port="8080" ... />` and change `8080` to `8082`.
+4.  Restart Tomcat.
 
 ---
 
@@ -75,7 +89,7 @@ startup.sh
 ## 5. Usage
 
 ### 5.1 Accessing the Application
-- **Main URL:** [http://localhost:8080/LogicLab/](http://localhost:8080/LogicLab/)
+- **Main URL:** [http://localhost:8082/LogicLab/](http://localhost:8082/LogicLab/)
 
 ### 5.2 Accounts
 | Role | Username | Password | Access |
@@ -90,7 +104,7 @@ startup.sh
 - **Victory Page**: Unlocks after completing Level 20. Displays a custom pixel-art implementation with a leaderboard.
 
 #### **Admin Panel**
-- **URL**: [http://localhost:8080/LogicLab/admin.jsp](http://localhost:8080/LogicLab/admin.jsp)
+- **URL**: [http://localhost:8082/LogicLab/admin.jsp](http://localhost:8082/LogicLab/admin.jsp)
 - **Level Manager**: Create, Edit, or Delete game levels.
 - **User Manager**:
     - **Edit User**: Change roles, passwords, or current level (e.g., promote a student to Admin).
