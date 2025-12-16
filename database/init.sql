@@ -10,7 +10,7 @@ USE logiclab;
 CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(50) NOT NULL, -- Storing plain text for simplicity (or hash it)
+    password VARCHAR(50) NOT NULL, 
     current_level_id INT DEFAULT 1,
     role VARCHAR(10) DEFAULT 'STUDENT' -- 'STUDENT' or 'ADMIN'
 );
